@@ -1,0 +1,88 @@
+package org.umbrella.util.bitmask;
+
+public class AllSetButLastBitMask extends SingleLongBitMask implements AllSetMask{
+
+    private static final AllSetButLastBitMask INSTANCE = new AllSetButLastBitMask();
+
+    private AllSetButLastBitMask() {
+    }
+    
+    public static AllSetButLastBitMask get() {
+        return INSTANCE;
+    }
+    
+    @Override
+    public BitMask set(int index) {
+        return index == 0 ? AllSetBitMask.get() : this;
+    }
+
+    @Override
+    public BitMask setAll(BitMask mask) {
+        return mask.isSet(0) ? AllSetBitMask.get() : this;
+    }
+
+    @Override
+    public BitMask reset(int index) {
+        if (index == 0)
+            return this;
+
+        return BitMask.getFull(index + 1).reset(0).reset(index);
+    }
+
+    @Override
+    public BitMask resetAll(BitMask mask) {
+        if (mask instanceof EmptyMask) {
+            return this;
+        }
+        if (mask instanceof AllSetMask) {
+            return this;
+        }
+
+        return BitMask.getFull(mask instanceof LongBitMask ? 1 : 65).reset(0).resetAll(mask);
+    }
+
+    @Override
+    public boolean isSet(int index) {
+        return index != 0;
+    }
+
+    @Override
+    public boolean isAllSet() {
+        return true;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return false;
+    }
+
+    @Override
+    public boolean intersects(BitMask mask) {
+        if (mask instanceof AllSetMask) {
+            return true;
+        }
+
+        if (mask instanceof EmptyMask) {
+            return true;
+        }
+
+        return mask instanceof LongBitMask ? (Long.MAX_VALUE & ((LongBitMask) (mask)).asLong()) != 0
+                : ((OpenBitSet) mask).nextSetBit(1) != -1;
+    }
+
+    @Override
+    public String getInstancingStatement() {
+        return AllSetButLastBitMask.class.getCanonicalName() + ".get()";
+    }
+
+    @Override
+    public long asLong() {
+        return Long.MAX_VALUE;
+    }
+
+    @Override
+    public SingleLongBitMask clone() {
+        return this;
+    }
+
+}

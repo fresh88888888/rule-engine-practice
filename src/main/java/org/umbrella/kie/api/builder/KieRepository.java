@@ -1,0 +1,68 @@
+package org.umbrella.kie.api.builder;
+
+import org.umbrella.kie.api.io.Resource;
+
+/**
+ * KieRepository is a singleton acting as a repository for all the available
+ * KieModules regardless if they are stored in the maven repository or programmatically
+ * built by the user
+ */
+public interface KieRepository {
+    /**
+     * Returns the default ReleaseId used to identify a KieModule in this
+     * KieRepository
+     * if the user didn't explicitly provide one
+     * 
+     * @return The default ReleaseId
+     */
+    ReleaseId getDefaultReleaseId();
+    
+    /**
+     * Adds a new KieModule to this KieRepository
+     * 
+     * @param kModule
+     */
+    void addKieModule(KieModule kModule);
+
+    /**
+     * Creates a new KieModule using the provided resource and dependencies and
+     * automatically adds it to this KieRepository
+     * 
+     * @param resource
+     * @param dependiencies
+     * @return
+     */
+    KieModule addKieModule(Resource resource, Resource... dependiencies);
+
+    /**
+     * Retrieve a KieModule with the given ReleaseId in this KieRepository.
+     * It is possible to use maven's conventions and version ranges like in
+     * 
+     * <pre>
+     * KieModule kieModule = kieRepository
+     *         .getKieModule(KieServices.Factory.get().newReleaseId("group", "artifact", "LATEST"));
+     * </pre>
+     * 
+     * or
+     * 
+     * <pre>
+     * KieModule kieModule = kieRepository
+     *         .getKieModule(KieServices.Factory.get().newReleaseId("group", "artifact", "[1.0,1.2)"));
+     * </pre>
+     * 
+     * @param releaseId The releaseId identifying the KieModule to be returned
+     * @return The KieModule identified by the given releaseId or null if such
+     *         KieModule doesn't exist
+     */
+    KieModule getKieModule(ReleaseId releaseId);
+    
+    /**
+     * Remove a no longer useful KieModule, identified by the given ReleaseId, from
+     * this KieRepository
+     * 
+     * @param releaseId The releaseId identifying the KieModule to be removed
+     * @return The removed KieModule or null if such KieModule didn't exist
+     */
+    KieModule removKieModule(ReleaseId releaseId);
+
+}

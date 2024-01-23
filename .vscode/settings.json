@@ -1,0 +1,7 @@
+{
+    "java.compile.nullAnalysis.mode": "disabled",
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "java.dependency.packagePresentation": "flat",
+    "editor.fontFamily": "JetBrainsMono-Light, ProggyCrossed, JetBrainsMono-Regular_ExtraLight",
+    "editor.fontSize": 14
+}
