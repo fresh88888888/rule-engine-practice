@@ -3,26 +3,12 @@
  */
 package org.umbrella.base;
 
+import org.kie.api.KieServices;
+
 public class Main {
 
     public static void main(String[] args) {
-        long v = (long) Math.pow(2, 32);
-        System.out.println("v >>> 32 : " + (v >>> 32));
-        System.out.println("1^1 : " + (1 ^ 1));
-        System.out.println("0^0 : " + (0 ^ 0));
-        System.out.println("1^0 : " + (1 ^ 0));
-        System.out.println("0^1 : " + (0 ^ 1));
+        KieServices kieServices = KieServices.Factory.get();
     }
 
-    public static int nextHighestPowerOfTwo(int v) {
-        v--;
-        v |= v >> 1;
-        v |= v >> 2;
-        v |= v >> 4;
-        v |= v >> 8;
-        v |= v >> 16;
-        v++;
-
-        return v;
-    }
 }
